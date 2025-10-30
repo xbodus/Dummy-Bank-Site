@@ -1,0 +1,328 @@
+{% extends "base.html" %}
+
+{% block title %}Future Bank - Home{% endblock %}
+
+{% block style %}
+	<style>
+		#navigation {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0 7rem;
+		}
+
+		#company-name {
+			font-size: 2.5rem;
+			margin: 0;
+		}
+
+		#motto {
+			font-size: 1rem;
+			margin: 0;
+		}
+
+		#index-navigation {
+			display: flex;
+			align-self: center;
+		}
+
+		#links {
+			display: flex;
+			align-items: center;
+			list-style-type: none;
+		}
+
+		.link {
+			margin-left: 20px;
+		}
+
+		.link.active {
+			background-color: #000;
+			color: #fff;
+			border-radius: 20px;
+			padding: .5rem 1rem;
+		}
+
+		section {
+			padding: 0 2rem;
+		}
+
+		#hero {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			height: 50vh;
+			width: 100%;
+			padding: 0 7rem;
+		}
+
+		#hero > button {
+			font-size: 1rem;
+			background-color: #000;
+			color: #fff;
+			border: none;
+			border-radius: 50px;
+			width: fit-content;
+			padding: .75rem 1.25rem;
+			margin: 1rem 0;
+		}
+
+		#hero > button > a {
+			text-decoration: none;
+		}
+
+		#hero > button > a:visited {
+			color: #fff;
+		}
+
+		#tag {
+			font-size: 1.5rem;
+		}
+
+		#incentive {
+			font-size: 3.5rem;
+			color: #fff;
+			width: 90%;
+			padding-left: 4rem;
+		}
+
+		#offer {
+			font-size: 5rem;
+			vertical-align: sub;
+		}
+
+		#hero > div {
+			display: flex;
+			align-items: center;
+			height: 100%;
+			width: 60%;
+		}
+
+		#incentive-container {
+			display: flex;
+			align-items: center;
+			background-color: #000;
+			width: 100%;
+			height: 100%;
+		}
+
+		#point-container {
+			height: 100%;
+			width: 20%;
+			display: flex;
+			align-items: center;
+		}
+
+		#incentive-point {
+			background-color: #000;
+			clip-path: polygon(0% 0%, 50% 0%, 100% 50%, 50% 100%, 0% 100%);
+			height: 100%;
+			width: 100%;
+
+		}
+
+		#features, #disclosures {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+			padding: 2rem;
+		}
+
+		#features > span {
+			margin: 0 3rem;
+		}
+
+		#locations {
+			padding: 4rem 2rem;
+		}
+
+		#locations-container {
+			display: flex;
+			justify-self: center;
+			gap: 2rem;
+			height: 50vh;
+			width: 70%;
+		}
+
+		#location-details {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 50%;
+		}
+
+		#location-details > h3 {
+			font-size: 2.5rem;
+			text-align: center;
+		}
+
+		#map {
+			height: 100%;
+			width: 50%;
+			border: 2px solid #000;
+			border-radius: 10px;
+		}
+
+		.disclosure-link {
+			font-size: .65rem;
+			vertical-align: text-bottom;
+			text-decoration: none;
+		}
+
+		#disclosures > div {
+			padding-bottom: 2rem;
+		}
+
+		#index-footer {
+			display: flex;
+			justify-content: center;
+			background-color: #000;
+			color: #fff;
+			padding: 5rem 0;
+			width: 100%;
+		}
+
+		#index-footer > div > div {
+			display: flex;
+			justify-content: center;
+		}
+
+		.footer-item {
+			margin-right: 2rem;
+		}
+
+		@media  screen and (max-width: 1250px) {
+			#incentive {
+				font-size: 2.5rem;
+			}
+		}
+
+		@media  screen and (max-width: 860px) {
+			#incentive {
+				font-size: 1.5rem;
+			}
+		}
+
+	</style>
+{% endblock %}
+
+{% block contents %}
+	<nav id="authentication-navigation">
+		{% if injected_user %}
+			<a href="{{ url_for('auth.logout') }}" class="auth-link"><button class="auth-btn">Logout</button></a>
+		{% else %}
+			<a href="{{ url_for('auth.login') }}" class="auth-link"><button class="auth-btn">Login</button></a>
+			<a href="{{ url_for('auth.signup') }}" class="auth-link"><button class="auth-btn">Sign Up</button></a>
+		{% endif %}
+	</nav>
+	<section id="navigation">
+		<span id="branding">
+			<h1 id="company-name">Future Bank</h1>
+			<h2 id="motto">Banking so smart it's future proof.</h2>
+		</span>
+		<nav id="index-navigation">
+			<ul id="links">
+				<li class="link active">Home</li>
+				<li class="link">Services</li>
+				<li class="link">Locations</li>
+				<li class="link">Contact</li>
+			</ul>
+		</nav>
+	</section>
+	<section id="hero">
+		{# Find a stock photo of people smiling while buying a home #}
+			<p id="tag">Banking for you. Banking for now. Banking for the future.</p>
+			<div>
+				<div id="incentive-container">
+					<p id="incentive">Open a checking & savings today and earn <span id="offer">$500!</span><span><a href="#disclosure-1" class="disclosure-link"> 1</a></span></p>
+				</div>
+				<div id="point-container">
+					<div id="incentive-point"></div>
+				</div>
+			</div>
+			<button>
+				<a href="{{ url_for('auth.signup') }}">Open Account</a>
+			</button>
+	</section>
+	<section id="features">
+		<span>
+			<h3>High Yield Savings</h3>
+			<p>Put your money where it will actually grow!</p>
+			<p>We offer:</p>
+			<ul>
+				<li>5.0% APY<span><a href="#disclosure-2" class="disclosure-link"> 2</a></span></li>
+				<li>Quick transfers</li>
+				<li>Budget management controls</li>
+			</ul>
+		</span>
+		<span>
+			<h3>Loan Services</h3>
+			<p>Need some help purchasing a car or a house?</p>
+			<p>Take advantage of our:</p>
+			<ul>
+				<li>Fast and easy loan applications</li>
+				<li>Low interest rates</li>
+			</ul>
+		</span>
+		<span>
+			<h3>Online Banking</h3>
+			<p>Need to make moves on the go?</p>
+			<p>We got you covered with our:</p>
+			<ul>
+				<li>Fast and secure banking apps</li>
+				<li>Mobile deposit services</li>
+				<li>24/7 tech support<span><a href="#disclosure-3" class="disclosure-link"> 3</a></span></li>
+			</ul>
+		</span>
+	</section>
+	<section id="locations">
+		<div id="locations-container">
+			<div id="map">
+
+			</div>
+			<div id="location-details">
+				{# location for Simpsons, Family Guy, and Futurama #}
+				<h3>Locations</h3>
+				<ul>
+					<li>
+						<h3>Springfield Branch</h3>
+						<p>Address: 742 Evergreen Terrace Springfield 1024</p>
+					</li>
+					<li>
+						<h3>Quahog Branch</h3>
+						<p>Address: 31 Spooner St Quahog 1433</p>
+					</li>
+					<li>
+						<h3>Brooklyn Branch</h3>
+						<p>Address: 36 Rugby Rd Brooklyn 2553</p>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</section>
+	<section id="disclosures">
+		<div>
+			<h4>Disclosures</h4>
+			<ol>
+				<li id="disclosure-1">After being accepted, initial deposit needs to be $10,000.23 exactly to qualify for the $500 bonus</li>
+				<li id="disclosure-2">Yeah, we know. It's pretty dang good. Only accounts $1,000,000 and up are eligle for the 5.0% APY. Everyone else gets 0.00001% APY</li>
+				<li id="disclosure-3">Would be 25/8, but the universe is against us.</li>
+			</ol>
+		</div>
+	</section>
+{% endblock %}
+
+{% block footer %}
+	<footer id="index-footer">
+		<div>
+			<div>
+				<p id="contact-number" class="footer-item"><span>Contact Number:</span>1(80)-333-444</p>
+				<p id="routing-number" class="footer-item"><span>Routing Number:</span>20425</p>
+			</div>
+			<p id="disclaimer">Disclaimer: This is not a real site or bank. Used for educational purposes only</p>
+		</div>
+	</footer>
+{% endblock %}
+
+{% block script %}
+{% endblock %}

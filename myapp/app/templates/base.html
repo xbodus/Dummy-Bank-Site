@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}Future Bank{% endblock %}</title>
+        <link rel="stylesheet" href="static/styles.css" />
+        {% block style %}{% endblock %}
+    </head>
+    <body>
+        <main>
+            {% with messages = get_flashed_messages(with_categories=True) %}
+				{% if messages %}
+					{% for category, message in messages %}
+						<p id="flash-message">{{ message }}</p>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
+            {% block contents %}                
+            {% endblock %}
+        </main>
+        {% block footer %}
+        {% endblock %}
+        {% block script %}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,30 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+}
+
+#flash-message {
+    text-align: center;
+}
+
+#authentication-navigation {
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    padding: 1rem 7rem;
+}
+
+.auth-link {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.auth-btn {
+    background-color: rgba(0,0,0,0);
+    border-radius: 20px;
+    padding: .25rem .5rem;
+    cursor: pointer;
+}

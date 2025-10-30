@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>404 Not Found</title>
+        <link rel="stylesheet" href="static/styles.css" />
+        <style>
+            #content-container {
+                display: flex;
+                height: 100vh;
+            }
+
+            .login-container {
+                background-color: #000;
+                height: 100%;
+                width: 50%;
+                padding: 2rem 5rem;
+            }
+
+            .login-container > a {
+                color: #fff;
+                text-decoration: none;
+                border: 2px solid #fff;
+                border-radius: 20px;
+                padding: .5rem 1rem;
+                cursor: pointer;
+            }
+
+            #flexbox-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+            }
+
+            #flexbox-container > div {
+                width: 50%;
+            }
+
+            h1, p {
+                color: #fff;
+            }
+
+            #results {
+                color: #fff;
+            }
+
+            #point {
+                background-color: #000;
+                clip-path: polygon(0% 0%, 50% 0%, 100% 50%, 50% 100%, 0% 100%);
+                height: 100%;
+                width: 20%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content-container">
+            <div class="login-container">
+                <a onclick="goBack()">Go back</a>
+                <div id="flexbox-container">
+                    <div>
+                        <h1>404 Not Found</h1>
+                        <p>
+                            We are sorry, dear user, for we have failed you.
+                            For the page you are looking for cannot be found.
+                            Please go back, as we are woefully unprepared for your visitation at this moment.
+                            Thank you for your patience while we look into this.
+                        </p>                
+                    </div>
+                </div>
+            </div>
+            <div id="point"></div>
+        </div>
+        <script>
+            function goBack() {
+                if (document.referrer) {
+                    window.history.back();
+                } else {
+                    window.location.href = "{{ url_for('main.index') }}";
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,436 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block style %}
+    <style>
+        #navigation-container {
+			display: flex;
+			justify-content: space-between;
+			width: 100%;
+			padding: 0 7rem;
+		}
+
+		#company-name {
+			font-size: 2.5rem;
+			margin: 0;
+		}
+
+		#motto {
+			font-size: 1rem;
+			margin: 0;
+		}
+
+		#account-navigation {
+			display: flex;
+			align-self: center;
+		}
+
+		#links {
+			display: flex;
+			align-items: center;
+            gap: 5px;
+			list-style-type: none;
+		}
+
+		.link {
+			text-decoration: none;
+            padding: .5rem 1rem;
+		}
+
+        .link:visited {
+            color: #000;
+        }
+
+        .link:hover {
+            background-color: rgba( 0, 0, 0, .1);
+			border-radius: 20px;
+        }
+
+		.link.active {
+			background-color: #000;
+			color: #fff;
+			border-radius: 20px;
+			padding: .5rem 1rem;
+		}
+
+        .link.active:visited {
+            color: #fff;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        #content-container {
+            display: flex;
+            gap: 30px;
+            padding: 2rem 7rem 4rem;
+        }
+
+        #main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 70%;
+        }
+
+        #balance-container {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 2rem;
+            border: 1px solid #000;
+            border-radius: 20px;
+        }
+
+        .balance {
+            font-size: 3rem;
+            vertical-align: middle;
+        }
+
+        #transactions {
+            padding: 2rem 0;
+        }
+
+        .transaction-container {
+            padding: 0 2rem;
+            border-bottom: 1px solid #000;
+        }
+
+        .transaction-top {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .transaction-details {
+            display: flex;
+            gap: 80px;
+        }
+
+        .amount {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        #sidebar, #sidebar-2 {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 15%;
+        }
+
+        .sidebar-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .side-link {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+            padding: .5rem;
+            width: 100%;
+            border-radius: 20px;
+        }
+
+        .side-link:visited {
+            color: #000;
+        }
+
+        .side-link:hover {
+            background-color: rgba( 0, 0, 0, .1);
+        }
+
+        #credit-score, #card-details {
+            width: 100%;
+            border: 1px solid #000;
+            border-radius: 20px;
+            padding: 1rem;
+        }
+
+        #credit-report, #cards {
+            margin: 0;
+        }
+
+        .button {
+            background-color: #000;
+            color: #fff;
+            padding: .5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #debit-container, #credit-container {
+            padding: 0 1rem;
+        }
+
+        #debit-container > p, #credit-container > p {
+            margin: 0;
+        }
+
+        .card-action-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .indicator-container {
+            display: flex;
+            background-color: #000;
+            height: 20px;
+            width: 20%;
+            border-radius: 20px;
+            padding: .2rem;
+            cursor: pointer;
+        }
+
+        .indicator-container.active {
+            justify-content: end;
+        }
+
+        .indicator {
+            background-color: #fff;
+            height: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 20px;
+        }
+
+        #index-footer {
+			display: flex;
+			justify-content: center;
+			background-color: #000;
+			color: #fff;
+			padding: 5rem 0;
+			width: 100%;
+		}
+
+		#index-footer > div > div {
+			display: flex;
+            justify-content: center;
+		}
+
+		.footer-item {
+			margin-right: 2rem;
+		}
+
+        h4 {
+            padding: .5rem 1rem;
+        }
+
+        h4:hover {
+            background-color: rgba( 0, 0, 0, .1);
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+{% endblock %}
+
+{% block contents %}
+    <nav id="authentication-navigation">
+		{% if injected_user %}
+			<a href="{{ url_for('auth.logout') }}" class="auth-link"><button class="auth-btn">Logout</button></a>
+		{% else %}
+			<a href="{{ url_for('auth.login') }}" class="auth-link"><button class="auth-btn">Login</button></a>
+			<a href="{{ url_for('auth.signup') }}" class="auth-link"><button class="auth-btn">Sign Up</button></a>
+		{% endif %}
+	</nav>
+    <section id="navigation-container">
+        <span id="branding">
+            <h1 id="company-name">Future Bank</h1>
+			<h2 id="motto">Banking so smart it's future proof.</h2>
+		</span>
+		<nav id="account-navigation">
+            <ul id="links">
+                <a href="{{ url_for('main.dashboard') }}" class="link active"><li>Dashboard</li></a>
+				<a href="{{ url_for('main.not_found') }}" class="link"><li>Pay & Transfer</li></a>
+				<a href="{{ url_for('main.not_found') }}" class="link"><li>Member Services</li></a>
+				<a href="{{ url_for('main.not_found') }}" class="link"><li>Account Details</li></a>
+			</ul>
+		</nav>
+    </section>
+    {% if profile_data %}
+        <h1>Welcome {{ profile_data.firstname | capitalize }} {{ profile_data.lastname | capitalize }}!</h1>
+    {% else %}
+        <h1>Welcome</h1>
+    {% endif %}
+    
+    <div id="content-container">            
+        <secition id="sidebar">
+            <div id="profile-info">
+                <div id="user-icon"></div>
+            </div>
+            <div id="quick-links">
+                <h3>Quick Links</h3>
+                <ul class="sidebar-links">
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>eStatements</li></a>
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>Quick Transfer</li></a>
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>Apply For Loan</li></a>
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>Bill Pay</li></a>
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>Set up eAlerts</li></a>
+                    <a href="{{ url_for('main.not_found')}}" class="side-link"><li>Modify My Payment</li></a>
+                </ul>
+            </div>
+            <div id="news">
+                <h3>Bank News</h3>
+                <ul class="sidebar-links">
+                    <a href="{{ url_for('main.not_found') }}" class="side-link"><li>Center</li></a>
+                    <a href="{{ url_for('main.not_found') }}" class="side-link"><li>Read the Newsletter</li></a>
+                    <a href="{{ url_for('main.not_found') }}" class="side-link"><li>Rewards</li></a>
+                </ul>
+            </div>
+        </secition>
+        <section id="main-container">
+            <canvas id="balance-chart" height="500" style="max-height: 500px;"></canvas>
+            <section id="account-details">
+                <h2>Account Balance</h2>
+                <div id="balance-container">
+                    <h3>Checking Account:  <span class="balance">${{ "%.2f"|format(totals.checking) }}</span></h3>
+                    <h3>Savings Account:  <span class="balance">${{ "%.2f"|format(totals.savings) }}</span></h3>
+                </div>
+                <div id="transactions">
+                    <h2>Transaction Details</h2>
+                    {% for data in activity_data %}
+                        <div class="transaction-container">
+                            <div class="transaction-top">
+                                    <div class="transaction-details">
+                                        <p>{{ data.date_created.strftime('%Y-%m-%d') }}</p>
+                                        <p>{{ data.details }}</p>
+                                    </div>
+                                    <p class="amount">{{ data.amount }}</p>
+                            </div>
+                            <div class="transaction-bottom">
+                                <p>{{ data.type }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+        </section>
+        <section id="sidebar-2">
+            <div id="credit-score">
+                <h3 id="credit-report">Credit Report</h3>
+                <p>Connect to receive NO DING credit score report and offers!</p>
+                <a href="{{ url_for('main.not_found') }}"><button class="button">Connect</button></a>
+            </div>
+            <div id="card-details">
+                <h3 id="cards">Card Details</h3>
+                <h4 onclick="toggleDrawer('debit')">Debit</h4>
+                <div id="debit-container" class="hidden">
+                    <p>Ending in <strong>2367</strong></p>
+                    <div class="card-action-container">
+                        <p>Lock card</p>
+                        <div onclick="this.classList.toggle('active')" class="indicator-container">
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 onclick="toggleDrawer('credit')">Credit</h4>
+                <div id="credit-container" class="hidden">
+                    <p>Ending in <strong>8546</strong></p>
+                    <div class="card-action-container">
+                        <p>Lock card</p>
+                        <div onclick="this.classList.toggle('active')" class="indicator-container">
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                    <p>Ending in <strong>6642</strong></p>
+                    <div class="card-action-container">
+                        <p>Lock card</p>
+                        <div onclick="this.classList.toggle('active')" class="indicator-container">
+                            <div class="indicator"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+{% block footer %}
+	<footer id="index-footer">
+		<div>
+			<div>
+				<p id="contact-number" class="footer-item"><span>Contact Number:</span>1(80)-333-444</p>
+				<p id="routing-number" class="footer-item"><span>Routing Number:</span>20425</p>
+			</div>
+			<p id="disclaimer">Disclaimer: This is not a real site or bank. Used for educational purposes only</p>
+		</div>
+	</footer>
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const balanceData = JSON.parse('{{ balance_data|tojson|safe }}');
+        console.log(balanceData);
+        const ctx = document.getElementById("balance-chart").getContext('2d');
+
+        const labels = balanceData.map(item => item.day);
+        const data = balanceData.map(item => item.balance);
+
+        window.chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Account Balance',
+                    data: data,
+                    borderColor: 'rgba(0, 0, 0, 1)',
+                    fill: true,
+                    tension: 0,
+                    borderWidth: 2,
+                    pointRadius: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        type: 'linear',
+                        ticks: {
+                            callback: function (value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    },
+                    x: {
+                        ticks: { autoSkip: true, maxTicksLimit: 8 }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    toolTip: {
+                        backgroundColor: '#333',
+                        titleColor: "#fff",
+                        bodyColor: '#fff',
+                        callbacks: {
+                            label: chart => `$${chart.parsed.y.toFixed(2)}`
+                        }
+                    }
+                }
+            }
+        });
+
+        function toggleDrawer(element) {
+            if (element === 'debit') {
+                const el = document.getElementById('debit-container');
+                el.classList.toggle('hidden');
+            };
+
+            if (element === 'credit') {
+                const el = document.getElementById('credit-container');
+                el.classList.toggle('hidden');
+            };
+        }
+    </script>
+{% endblock %}

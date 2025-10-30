@@ -1,0 +1,1 @@
+This is a dummy site created for the purposes of demonstarting basic web attacks. By no means is anything here created to demonstrate secure practices as the point is to demonstrate attacks like XXS, SQL injection, etc. If looking to use for personal project please reach out to xbodus@gmail.com.
