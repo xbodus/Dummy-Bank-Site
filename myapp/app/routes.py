@@ -1,5 +1,10 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
-from app import mysql
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, make_response
+from flask_wtf import FlaskForm
+from flask_login import login_user
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired
+from app import mysql, login_manager, User
+from MySQLdb.cursors import DictCursor
 import time
 from decimal import Decimal
 
@@ -81,30 +86,38 @@ def signup():
     return render_template("signup.html")
 
 
+
+
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+
+
 @auth.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+    form = LoginForm()
 
-        cursor = mysql.connection.cursor()
-
+    if form.validate_on_submit():
+        cursor = mysql.connection.cursor(DictCursor)
         try:
-            cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (username, password))
+            cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (form.username.data, form.password.data))
             user = cursor.fetchone()
-            if user:
+            if user and user["password"] == form.password.data:
+                user_obj = User(user["user_id"], user["username"])
+                login_user(user_obj)
                 flash("User authenticated successfully", "success")
-                session['user_id'] = user[0]
-                session['username'] = user[1]
+                session['user_id'] = user_obj.id
+                session['username'] = user_obj.username
                 return redirect(url_for("main.dashboard"))
             else:
                 flash("Username or password invalid", "failed")
+                return make_response(render_template("login.html", form=form, error="Invalid login"), 401)
         except Exception as e:
-                flash(f"Authentication Error: {e}", "error")
+                print(f"Authentication Error: {e}", "error")
         finally:
             cursor.close()
-            
-    return render_template("login.html")
+
+    return render_template("login.html", form=form)
 
 
 @auth.route("/logout")

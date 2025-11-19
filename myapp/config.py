@@ -13,3 +13,7 @@ class Config:
     SESSION_COOKIE_SAMESITE = 'Lax'
     SESSION_COOKIE_SECURE = False
     TEMPLATES_AUTO_RELOAD = True
+    SERVER_NAME = "https://futurebank.local"
+    PREFERRED_URL_SCHEME = 'https'
+    SESSION_COOKIE_SAMESITE = 'None'
+    SESSION_COOKIE_SECURE = True

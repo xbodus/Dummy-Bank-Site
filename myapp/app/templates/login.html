@@ -94,8 +94,9 @@
 				<div id="login-form-container">
 					<h1>Login</h1>
 					<form id="login-form" action="{{ url_for('auth.login')}}" method="POST">
-						<input id="username" name="username" class="form-item" type="text" placeholder="Enter Username" required />
-						<input id="password" name="password" class="form-item" type="password" placeholder="Enter Password" required />
+						{{ form.csrf_token }}
+						{{ form.username(class="form-item", placeholder="Enter Username") }}
+						{{ form.password(class="form-item", placeholder="Enter Password") }}
 						<button type="submit">Enter</button>
 					</form>
 					<p>Don't have an account?<span><a href="{{ url_for('auth.signup') }}"> Sign up</a></span></p>
