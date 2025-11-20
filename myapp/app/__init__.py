@@ -35,7 +35,8 @@ def create_app():
 
         @app.context_processor
         def inject_user():
-                username = session.get('username')
+                username = session.get('username', None)
+                app.config["USERNAME"] = username
                 return {'injected_user': username}
         
         return app

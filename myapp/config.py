@@ -17,3 +17,4 @@ class Config:
     PREFERRED_URL_SCHEME = 'https'
     SESSION_COOKIE_SAMESITE = 'None'
     SESSION_COOKIE_SECURE = True
+    SESSION_PERMANENT = False

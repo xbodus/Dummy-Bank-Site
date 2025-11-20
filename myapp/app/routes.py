@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session, make_response
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, make_response, current_app
 from flask_wtf import FlaskForm
 from flask_login import login_user
 from wtforms import StringField, PasswordField
@@ -14,7 +14,13 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def index():
+    user = session.get("user_id", None)
+
+    if user:
+        return redirect(url_for("main.dashboard")) 
+    
     return render_template("index.html")
+    
 
 
 @main.route("/dashboard")
@@ -22,10 +28,17 @@ def dashboard():
     # Select data from user_profile and user_activity that match user_id
     cursor = mysql.connection.cursor()
 
-    id = str(session['user_id'])
+    id = session.get("user_id", None)
 
-    cursor.execute("SELECT * FROM user_profile WHERE user_id=%s", (id))
+    if not id:
+        return redirect(url_for("main.index"))
+
+    cursor.execute("SELECT * FROM user_profile WHERE user_id=%s", (id,))
     profile_response = cursor.fetchone()
+
+    # if not profile_response:
+    #     return redirect(url_for("main.index"))
+
     profile_id, p_user_id, first_name, last_name, bio, avatar_url = profile_response
 
     profile_data = {
@@ -33,7 +46,7 @@ def dashboard():
         "lastname" : last_name
     }
 
-    cursor.execute("SELECT * FROM user_activity WHERE user_id=%s", (id))
+    cursor.execute("SELECT * FROM user_activity WHERE user_id=%s", (id,))
     activity_response = cursor.fetchall()
 
     account_totals = {
@@ -104,7 +117,7 @@ def login():
             user = cursor.fetchone()
             if user and user["password"] == form.password.data:
                 user_obj = User(user["user_id"], user["username"])
-                login_user(user_obj)
+                login_user(user_obj, remember=False)
                 flash("User authenticated successfully", "success")
                 session['user_id'] = user_obj.id
                 session['username'] = user_obj.username
