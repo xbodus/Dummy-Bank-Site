@@ -9,6 +9,10 @@ import time
 from decimal import Decimal
 
 
+class LoginForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired()])
+    password = PasswordField('password', validators=[DataRequired()])
+
 
 main = Blueprint("main", __name__)
 
@@ -85,7 +89,20 @@ def dashboard():
 
 @main.route("/not_found")
 def not_found():
-    return render_template("404_not_found.html")
+    return render_template("404_not_found.html"), 404
+
+
+@main.route("/admin")
+def admin_panel():
+    form = LoginForm()
+    user_role = session.get("role", "user")
+
+    if user_role != "admin":
+        flash("Invalid admin account", "error")
+        return make_response(render_template("login.html", form=form, error="Invalid admin account"), 403)
+
+    return redirect(url_for("main.not_found"))
+
 
 
 
@@ -100,10 +117,6 @@ def signup():
 
 
 
-
-class LoginForm(FlaskForm):
-    username = StringField('username', validators=[DataRequired()])
-    password = PasswordField('password', validators=[DataRequired()])
 
 
 @auth.route("/login", methods=["GET", "POST"])
